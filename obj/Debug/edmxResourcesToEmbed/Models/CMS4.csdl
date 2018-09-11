@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admins">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Admins_Users" FromRole="Admins" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="AspNetRoles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUsers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Users_AspNetUsers" FromRole="AspNetUsers" ToRole="Users" />
+    <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+  </EntityType>
+  <EntityType Name="Authors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Authors_Users" FromRole="Authors" ToRole="Users" />
+    <NavigationProperty Name="Papers" Relationship="Self.FK_Papers_Authors" FromRole="Authors" ToRole="Papers" />
+  </EntityType>
+  <EntityType Name="Chairs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ExpertiseId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Expertises" Relationship="Self.FK_Chairs_Expertise" FromRole="Chairs" ToRole="Expertises" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Chairs_Users" FromRole="Chairs" ToRole="Users" />
+    <NavigationProperty Name="Conferences" Relationship="Self.FK_Conferences_Chairs" FromRole="Chairs" ToRole="Conferences" />
+  </EntityType>
+  <EntityType Name="Conferences">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="ChairId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Deadline" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Chairs" Relationship="Self.FK_Conferences_Chairs" FromRole="Conferences" ToRole="Chairs" />
+    <NavigationProperty Name="Papers" Relationship="Self.FK_Papers_Conferences" FromRole="Conferences" ToRole="Papers" />
+  </EntityType>
+  <EntityType Name="Evaluation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="PaperId" Type="Int32" Nullable="false" />
+    <Property Name="ReviewerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Review1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Rating" Type="Int32" />
+    <Property Name="Date" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Papers" Relationship="Self.FK_Evaluation_Papers" FromRole="Evaluation" ToRole="Papers" />
+    <NavigationProperty Name="Reviewers" Relationship="Self.FK_Evaluation_Reviewers" FromRole="Evaluation" ToRole="Reviewers" />
+    <Property Name="StatusId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Status1" Relationship="Model.FK_Evaluation_Status" FromRole="Evaluation" ToRole="Status" />
+  </EntityType>
+  <EntityType Name="Expertises">
+    <Key>
+      <PropertyRef Name="ExpertiseId" />
+    </Key>
+    <Property Name="ExpertiseId" Type="Int32" Nullable="false" />
+    <Property Name="Expertise" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Chairs" Relationship="Self.FK_Chairs_Expertise" FromRole="Expertises" ToRole="Chairs" />
+    <NavigationProperty Name="Papers" Relationship="Self.FK_Papers_Expertise" FromRole="Expertises" ToRole="Papers" />
+    <NavigationProperty Name="Reviewers" Relationship="Self.FK_Reviewers_Expertise" FromRole="Expertises" ToRole="Reviewers" />
+  </EntityType>
+  <EntityType Name="Papers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FileUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AuthorId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ConferenceId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="KeywordId" Type="Int32" />
+    <NavigationProperty Name="Authors" Relationship="Self.FK_Papers_Authors" FromRole="Papers" ToRole="Authors" />
+    <NavigationProperty Name="Conferences" Relationship="Self.FK_Papers_Conferences" FromRole="Papers" ToRole="Conferences" />
+    <NavigationProperty Name="Evaluation" Relationship="Self.FK_Evaluation_Papers" FromRole="Papers" ToRole="Evaluation" />
+    <NavigationProperty Name="Expertises" Relationship="Self.FK_Papers_Expertise" FromRole="Papers" ToRole="Expertises" />
+  </EntityType>
+  <EntityType Name="Reviewers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ExpertiseId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Evaluation" Relationship="Self.FK_Evaluation_Reviewers" FromRole="Reviewers" ToRole="Evaluation" />
+    <NavigationProperty Name="Expertises" Relationship="Self.FK_Reviewers_Expertise" FromRole="Reviewers" ToRole="Expertises" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Reviewers_Users" FromRole="Reviewers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Orgnisation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImgUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Admins" Relationship="Self.FK_Admins_Users" FromRole="Users" ToRole="Admins" />
+    <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Users_AspNetUsers" FromRole="Users" ToRole="AspNetUsers" />
+    <NavigationProperty Name="Authors" Relationship="Self.FK_Authors_Users" FromRole="Users" ToRole="Authors" />
+    <NavigationProperty Name="Chairs" Relationship="Self.FK_Chairs_Users" FromRole="Users" ToRole="Chairs" />
+    <NavigationProperty Name="Reviewers" Relationship="Self.FK_Reviewers_Users" FromRole="Users" ToRole="Reviewers" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_Admins_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Admins" Type="Self.Admins" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Admins">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Authors_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Authors">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Papers_Authors">
+    <End Role="Authors" Type="Self.Authors" Multiplicity="1" />
+    <End Role="Papers" Type="Self.Papers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Authors">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Papers">
+        <PropertyRef Name="AuthorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Chairs_Expertise">
+    <End Role="Expertises" Type="Self.Expertises" Multiplicity="1" />
+    <End Role="Chairs" Type="Self.Chairs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Expertises">
+        <PropertyRef Name="ExpertiseId" />
+      </Principal>
+      <Dependent Role="Chairs">
+        <PropertyRef Name="ExpertiseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Chairs_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Chairs" Type="Self.Chairs" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Chairs">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Conferences_Chairs">
+    <End Role="Chairs" Type="Self.Chairs" Multiplicity="1" />
+    <End Role="Conferences" Type="Self.Conferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Chairs">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Conferences">
+        <PropertyRef Name="ChairId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Papers_Conferences">
+    <End Role="Conferences" Type="Self.Conferences" Multiplicity="1" />
+    <End Role="Papers" Type="Self.Papers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Conferences">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Papers">
+        <PropertyRef Name="ConferenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluation_Papers">
+    <End Role="Papers" Type="Self.Papers" Multiplicity="1" />
+    <End Role="Evaluation" Type="Self.Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Papers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="PaperId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluation_Reviewers">
+    <End Role="Reviewers" Type="Self.Reviewers" Multiplicity="1" />
+    <End Role="Evaluation" Type="Self.Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reviewers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="ReviewerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Papers_Expertise">
+    <End Role="Expertises" Type="Self.Expertises" Multiplicity="0..1" />
+    <End Role="Papers" Type="Self.Papers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Expertises">
+        <PropertyRef Name="ExpertiseId" />
+      </Principal>
+      <Dependent Role="Papers">
+        <PropertyRef Name="KeywordId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reviewers_Expertise">
+    <End Role="Expertises" Type="Self.Expertises" Multiplicity="1" />
+    <End Role="Reviewers" Type="Self.Reviewers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Expertises">
+        <PropertyRef Name="ExpertiseId" />
+      </Principal>
+      <Dependent Role="Reviewers">
+        <PropertyRef Name="ExpertiseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reviewers_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Reviewers" Type="Self.Reviewers" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reviewers">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="CMS4Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admins" />
+    <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
+    <EntitySet Name="Authors" EntityType="Self.Authors" />
+    <EntitySet Name="Chairs" EntityType="Self.Chairs" />
+    <EntitySet Name="Conferences" EntityType="Self.Conferences" />
+    <EntitySet Name="Evaluation" EntityType="Self.Evaluation" />
+    <EntitySet Name="Expertises" EntityType="Self.Expertises" />
+    <EntitySet Name="Papers" EntityType="Self.Papers" />
+    <EntitySet Name="Reviewers" EntityType="Self.Reviewers" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK_Admins_Users" Association="Self.FK_Admins_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Admins" EntitySet="Admins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_AspNetUsers" Association="Self.FK_Users_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Authors_Users" Association="Self.FK_Authors_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Authors" EntitySet="Authors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Papers_Authors" Association="Self.FK_Papers_Authors">
+      <End Role="Authors" EntitySet="Authors" />
+      <End Role="Papers" EntitySet="Papers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Chairs_Expertise" Association="Self.FK_Chairs_Expertise">
+      <End Role="Expertises" EntitySet="Expertises" />
+      <End Role="Chairs" EntitySet="Chairs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Chairs_Users" Association="Self.FK_Chairs_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Chairs" EntitySet="Chairs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Conferences_Chairs" Association="Self.FK_Conferences_Chairs">
+      <End Role="Chairs" EntitySet="Chairs" />
+      <End Role="Conferences" EntitySet="Conferences" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Papers_Conferences" Association="Self.FK_Papers_Conferences">
+      <End Role="Conferences" EntitySet="Conferences" />
+      <End Role="Papers" EntitySet="Papers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluation_Papers" Association="Self.FK_Evaluation_Papers">
+      <End Role="Papers" EntitySet="Papers" />
+      <End Role="Evaluation" EntitySet="Evaluation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluation_Reviewers" Association="Self.FK_Evaluation_Reviewers">
+      <End Role="Reviewers" EntitySet="Reviewers" />
+      <End Role="Evaluation" EntitySet="Evaluation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Papers_Expertise" Association="Self.FK_Papers_Expertise">
+      <End Role="Expertises" EntitySet="Expertises" />
+      <End Role="Papers" EntitySet="Papers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reviewers_Expertise" Association="Self.FK_Reviewers_Expertise">
+      <End Role="Expertises" EntitySet="Expertises" />
+      <End Role="Reviewers" EntitySet="Reviewers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reviewers_Users" Association="Self.FK_Reviewers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Reviewers" EntitySet="Reviewers" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+      <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <EntitySet Name="Status" EntityType="Model.Status" />
+    <AssociationSet Name="FK_Evaluation_Status" Association="Model.FK_Evaluation_Status">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="Evaluation" EntitySet="Evaluation" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PaperStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Evaluation" Relationship="Model.FK_Evaluation_Status" FromRole="Status" ToRole="Evaluation" />
+  </EntityType>
+  <Association Name="FK_Evaluation_Status">
+    <End Type="Model.Status" Role="Status" Multiplicity="0..1" />
+    <End Type="Model.Evaluation" Role="Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
